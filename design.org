@@ -48,12 +48,20 @@ JSON Records are separated by newline (\n).
 
 Below are various expected command utilities:
 
+*** json2sql
 #+BEGIN_SRC nash
-cat file.json | dbtest json2sql --schema schema.json --table "reddit" --database "reddit"
+cat file.json | dbtest json2sql --schema schema.json --table "reddit" --database "reddit" --batch-size 2
 USE DATABASE = "reddit";
 INSERT INTO `reddit` (gilded, author_flair_text, author_flair_css_class,
                       retrieved_on, ups, subreddit_id, edited, controversiality,
                       parent_id, subreddit, ...)
-    VALUES (0, "Male", "male", 1425124228, 3, "t5_2s30g", false, 0, "t1_cnapn0k", ...);
+    VALUES (0, "Male", "male", 1425124228, 3, "t5_2s30g", false, 0, "t1_cnapn0k", ...),
+    VALUES (1, "Male", "male", 1425124229, 4, "t5_2s30e", true, 0, "t1_cnapn0g", ...);
 }
+#+END_SRC
+
+*** insert
+
+#+BEGIN_SRC nash
+cat file.sql | dbtest insert --host localhost:27257
 #+END_SRC
