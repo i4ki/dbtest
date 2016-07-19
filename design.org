@@ -1,0 +1,59 @@
+#+AUTHOR: Tiago Natel de Moura
+
+* DBTEST:: Database testing tool
+
+This tool was created to help in the comparisons between PostgreSQL
+and cockcroachdb clusters. It must support index the same dataset in
+both technologies in the same way and then measure simple and complex
+queries on this dataset.
+
+** Datasets
+
+Initially we'll use *Reddit entire dataset* available to download in
+the following URL:
+
+https://www.reddit.com/r/datasets/comments/3bxlg7/i_have_every_publicly_available_reddit_comment/
+
+Example json:
+
+#+BEGIN_SRC json
+{
+	"gilded": 0,
+	"author_flair_text": "Male",
+	"author_flair_css_class": "male",
+	"retrieved_on": 1425124228,
+	"ups": 3,
+	"subreddit_id": "t5_2s30g",
+	"edited": false,
+	"controversiality": 0,
+	"parent_id": "t1_cnapn0k",
+	"subreddit": "AskMen",
+	"body": "I can't agree with passing the blame, but I'm glad to hear it's at least helping you with the anxiety. I went the other direction and started taking responsibility for everything. I had to realize that people make mistakes including myself and it's gonna be alright. I don't have to be shackled to my mistakes and I don't have to be afraid of making them. ",
+	"created_utc": "1420070668",
+	"downs": 0,
+	"score": 3,
+	"author": "TheDukeofEtown",
+	"archived": false,
+	"distinguished": null,
+	"id": "cnasd6x",
+	"score_hidden": false,
+	"name": "t1_cnasd6x",
+	"link_id": "t3_2qyhmp"
+}
+#+END_SRC
+
+JSON Records are separated by newline (\n).
+
+** Interface
+
+Below are various expected command utilities:
+
+#+BEGIN_SRC nash
+cat file.json | dbtest json2sql --schema schema.json --table "reddit" --database "reddit"
+USE DATABASE = "reddit";
+INSERT INTO `reddit` (gilded, author_flair_text, author_flair_css_class,
+                      retrieved_on, ups, subreddit_id, edited, controversiality,
+                      parent_id, subreddit, ...)
+    VALUES (0, "Male", "male", 1425124228, 3, "t5_2s30g", false, 0, "t1_cnapn0k", ...);
+}
+#+END_SRC
